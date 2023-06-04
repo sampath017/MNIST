@@ -3,6 +3,7 @@ numpy
 pillow
 torch
 torchvision 
+torchmetrics
 lightning
 wandb
 scikit-learn
