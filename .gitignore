@@ -1,5 +1,9 @@
 # Data
 data/
+logs/
+# project name
+digits/ 
+wandb/
 
 # IDE's
 .vs/

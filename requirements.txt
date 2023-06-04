@@ -1,14 +1,16 @@
 # Production
-git+https://github.com/sampath017/fastcore.git
-fastdownload
 numpy 
 pillow
 torch
 torchvision 
+lightning
+wandb
 scikit-learn
 
 # Dev
 matplotlib 
 jupyterlab 
+jupyter 
+notebook
 autopep8 
 pytest
