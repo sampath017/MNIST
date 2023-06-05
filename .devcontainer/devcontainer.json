@@ -1,8 +1,8 @@
 {
   "name": "digits",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": "../"
+    "dockerfile": "Dockerfile.dev",
+    "context": "."
   },
   // 👇 Features to add to the Dev Container. More info: https://containers.dev/implementors/features.
   // "features": {},
@@ -15,14 +15,8 @@
     "vscode": {
       "extensions": [
 		"ms-python.python",
-		"njpwerner.autodocstring",
-		"ms-python.autopep8",
-		"bungcip.better-toml",
 		"ms-toolsai.jupyter",
-		"ms-vscode-remote.remote-containers",
-		"ms-vscode-remote.vscode-remote-extensionpack",
-		"ms-azuretools.vscode-docker",
-		"donjayamanne.python-extension-pack"
+		"ms-python.autopep8"
 	]
     }
   },
