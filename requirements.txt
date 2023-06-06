@@ -10,8 +10,6 @@ scikit-learn
 
 # Dev
 matplotlib 
-jupyterlab 
 jupyter 
 notebook
-autopep8 
 pytest
