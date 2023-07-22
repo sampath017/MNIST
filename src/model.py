@@ -10,6 +10,7 @@ class Digits(LightningModule):
         super().__init__()
         self.save_hyperparameters()
         self.model = nn.Sequential(
+            # Feature extractor
             nn.Conv2d(1, 32, kernel_size=3, padding='same'),
             nn.ReLU(),
             nn.Conv2d(32, 32, kernel_size=3),
@@ -31,6 +32,7 @@ class Digits(LightningModule):
             nn.MaxPool2d(kernel_size=2),
             nn.Dropout(p=0.25),
 
+            # learner
             nn.Flatten(),
 
             nn.Linear(128, 256),
@@ -49,7 +51,7 @@ class Digits(LightningModule):
         acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
         self.log("train_loss", loss, on_step=False, on_epoch=True)
-        self.log("train_acc", acc*100.0, on_step=False, on_epoch=True)
+        self.log("train_acc", acc*100, on_step=False, on_epoch=True)
 
         return loss
 
@@ -60,7 +62,7 @@ class Digits(LightningModule):
         acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
         self.log("val_loss", loss)
-        self.log("val_acc", acc*100.0)
+        self.log("val_acc", acc*100)
 
         return loss
 
