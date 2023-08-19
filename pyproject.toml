@@ -12,8 +12,8 @@ pillow = "^10.0.0"
 torch = "^2.0.1"
 torchvision = "^0.15.2"
 torchmetrics = "^1.0.3"
-lightning = "^2.0.7"
 wandb = "^0.15.8"
+lightning = "^2.0.7"
 
 
 [tool.poetry.group.dev.dependencies]

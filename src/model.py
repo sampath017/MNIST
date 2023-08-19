@@ -48,10 +48,10 @@ class Digits(LightningModule):
         X, y = batch
         y_pred = self(X)
         loss = nn.functional.cross_entropy(y_pred, y)
-        acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
+        # acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
-        self.log("train_loss", loss, on_step=False, on_epoch=True)
-        self.log("train_acc", acc*100, on_step=False, on_epoch=True)
+        self.log("train_loss", loss, on_step=True, on_epoch=True)
+        # self.log("train_acc", acc*100, on_step=True, on_epoch=True)
 
         return loss
 
@@ -59,10 +59,10 @@ class Digits(LightningModule):
         X, y = batch
         y_pred = self(X)
         loss = nn.functional.cross_entropy(y_pred, y)
-        acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
+        # acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
-        self.log("val_loss", loss)
-        self.log("val_acc", acc*100)
+        self.log("val_loss", loss, on_step=True, on_epoch=True)
+        # self.log("val_acc", acc*100, on_step=True, on_epoch=True)
 
         return loss
 
