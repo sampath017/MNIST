@@ -826,6 +826,26 @@ files = [
 tests = ["asttokens", "littleutils", "pytest", "rich"]
 
 [[package]]
+name = "extentions"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = "^3.10"
+files = []
+develop = false
+
+[package.dependencies]
+lightning = "^2.0.7"
+numpy = "^1.25.2"
+torch = "^2.0.1"
+
+[package.source]
+type = "git"
+url = "https://github.com/sampath017/extentions.git"
+reference = "HEAD"
+resolved_reference = "84f03c3f0179d28e8eb882e56aada79249385dc9"
+
+[[package]]
 name = "fastapi"
 version = "0.101.1"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -4089,4 +4109,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "22f2645abb63b60af2ed40367d7c0ea37f4a19b06addfd9336ffa48a5272d78d"
+content-hash = "6c9beb4dcfd74fad5e2012b7dbfd7816fa41c678ce419f8fc932cf68e8f4ef13"
