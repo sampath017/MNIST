@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from PIL import Image
 import lightning.pytorch as pl
-from torch.utils.data import random_split, DataLoader
+from torch.utils.data import random_split, DataLoader, Dataset
 from torchvision import datasets
 from torchvision import transforms
 
