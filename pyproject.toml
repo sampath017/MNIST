@@ -21,6 +21,7 @@ extentions = {git = "https://github.com/sampath017/extentions.git"}
 matplotlib = "^3.7.2"
 jupyter = "^1.0.0"
 notebook = "^7.0.2"
+autopep8 = "^2.0.4"
 
 [build-system]
 requires = ["poetry-core"]
