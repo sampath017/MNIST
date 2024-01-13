@@ -1,4 +1,4 @@
-# digits
+# MNIST
 
 A [mnist-dataset](http://yann.lecun.com/exdb/mnist/) classifier that is coded to use it as a reference to start other image classification projects that uses [pytorch](https://pytorch.org/) for modeling.
 
