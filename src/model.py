@@ -1,6 +1,7 @@
 import torch
 
 from torchmetrics.functional import accuracy
+import torch.nn.functional as F
 from lightning.pytorch import LightningModule
 from torch import nn
 
@@ -33,6 +34,7 @@ model_cnn = nn.Sequential(
     nn.Linear(128, 256),
     nn.ReLU(),
     nn.Dropout(p=0.5),
+
     nn.Linear(256, 10)
 )
 
@@ -60,29 +62,29 @@ class Digits(LightningModule):
     def training_step(self, batch, batch_idx):
         X, y = batch
         y_pred = self(X)
-        loss = nn.functional.cross_entropy(y_pred, y)
+        loss = F.cross_entropy(y_pred, y)
         acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
         self.log("train_loss", loss, on_step=True, on_epoch=True)
-        self.log("train_acc", acc*100, on_step=True, on_epoch=True)
+        self.log("train_acc", acc*100.0, on_step=True, on_epoch=True)
 
         return loss
 
     def validation_step(self, batch, batch_idx):
         X, y = batch
         y_pred = self(X)
-        loss = nn.functional.cross_entropy(y_pred, y)
+        loss = F.cross_entropy(y_pred, y)
         acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
         self.log("val_loss", loss, on_step=True, on_epoch=True)
-        self.log("val_acc", acc*100, on_step=True, on_epoch=True)
+        self.log("val_acc", acc*100.0, on_step=True, on_epoch=True)
 
         return loss
 
     def test_step(self, batch, batch_idx):
         X, y = batch
         y_pred = self(X)
-        loss = nn.functional.cross_entropy(y_pred, y)
+        loss = F.cross_entropy(y_pred, y)
         acc = accuracy(y_pred, y, task='multiclass', num_classes=10)
 
         self.log("test_loss", loss)
