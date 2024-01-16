@@ -28,7 +28,7 @@ model_cnn = nn.Sequential(
 )
 
 
-class Digits(LightningModule):
+class MNIST(LightningModule):
     def __init__(self, optimizer_name, optimizer_hparams={}):
         super().__init__()
         self.save_hyperparameters()

@@ -1,14 +1,12 @@
 from pathlib import Path
 import gradio as gr
-from lightning.pytorch import loggers
-from pathlib import Path
 
 import torch
 from lightning.pytorch import loggers
 import torchvision.transforms.functional as v_F
 import torch.nn.functional as F
 
-from model import Digits
+from model import MNIST
 from PIL import Image
 
 root_path = Path('../')
@@ -16,16 +14,16 @@ root_path = Path('../')
 artifact_dir = root_path / 'artifacts'
 artifact_dir.mkdir(exist_ok=True)
 
-model_path = Path(loggers.WandbLogger.download_artifact(
-    artifact="sampath017/MNIST/model-74c3j2pz:v12",
+model_path = Path(loggers.WandbLogger.download_artifact(  # type: ignore
+    artifact="sampath017/model-registry/MNIST:v2",
     artifact_type='model',
     save_dir=artifact_dir
-))  # type: ignore
+))
 
 model_path = model_path / 'model.ckpt'
 
 
-model = Digits.load_from_checkpoint(
+model = MNIST.load_from_checkpoint(
     model_path, map_location=torch.device('cpu'))
 
 
@@ -33,12 +31,14 @@ def predict(image_obj):
     image = image_obj.get("composite")
     resized_img = image.resize(size=(28, 28))
 
-    data = v_F.to_tensor(resized_img)
+    data = v_F.to_tensor(resized_img).unsqueeze(0)
 
     logits = model.predict_step(data, 0)
-    probs = F.softmax(logits, dim=-1).item()
+    probs = F.softmax(logits, dim=-1)[0].tolist()
 
-    return probs
+    confidences = {i: p for i, p in enumerate(probs)}
+
+    return confidences
 
 
 demo = gr.Interface(
