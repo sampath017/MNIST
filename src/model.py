@@ -5,32 +5,21 @@ import torch.nn.functional as F
 from lightning.pytorch import LightningModule
 from torch import nn
 
+
 model_cnn = nn.Sequential(
     # Feature extractor
-    nn.LazyConv2d(32, kernel_size=3),
+    nn.LazyConv2d(6, kernel_size=5),
+    nn.LazyBatchNorm2d(),
     nn.ReLU(),
-    nn.LazyConv2d(32, kernel_size=3),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=2),
-    nn.Dropout(p=0.25),
+    nn.MaxPool2d(kernel_size=2, stride=2),
 
-    nn.LazyConv2d(64, kernel_size=3),
+    nn.LazyConv2d(16, kernel_size=5),
+    nn.LazyBatchNorm2d(),
     nn.ReLU(),
-    nn.LazyConv2d(64, kernel_size=3),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=2),
-    nn.Dropout(p=0.25),
-
-    nn.LazyConv2d(128, kernel_size=3),
-    nn.ReLU(),
-    nn.LazyConv2d(128, kernel_size=3),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=2),
-    nn.Dropout(p=0.25),
+    nn.MaxPool2d(kernel_size=2, stride=2),
 
     # learner
     nn.Flatten(),
-
     nn.LazyLinear(256),
     nn.ReLU(),
     nn.Dropout(p=0.5),

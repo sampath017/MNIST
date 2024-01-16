@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Digits"
+name = "MNIST"
 version = "0.1.0"
 description = ""
 authors = ["sampath <118274231+sampath017@users.noreply.github.com>"]
