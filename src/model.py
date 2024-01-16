@@ -7,23 +7,23 @@ from torch import nn
 
 model_cnn = nn.Sequential(
     # Feature extractor
-    nn.Conv2d(1, 32, kernel_size=3, padding='same'),
+    nn.LazyConv2d(32, kernel_size=3),
     nn.ReLU(),
-    nn.Conv2d(32, 32, kernel_size=3),
-    nn.ReLU(),
-    nn.MaxPool2d(kernel_size=2),
-    nn.Dropout(p=0.25),
-
-    nn.Conv2d(32, 64, kernel_size=3, padding='same'),
-    nn.ReLU(),
-    nn.Conv2d(64, 64, kernel_size=3),
+    nn.LazyConv2d(32, kernel_size=3),
     nn.ReLU(),
     nn.MaxPool2d(kernel_size=2),
     nn.Dropout(p=0.25),
 
-    nn.Conv2d(64, 128, kernel_size=3, padding='same'),
+    nn.LazyConv2d(64, kernel_size=3),
     nn.ReLU(),
-    nn.Conv2d(128, 128, kernel_size=3),
+    nn.LazyConv2d(64, kernel_size=3),
+    nn.ReLU(),
+    nn.MaxPool2d(kernel_size=2),
+    nn.Dropout(p=0.25),
+
+    nn.LazyConv2d(128, kernel_size=3),
+    nn.ReLU(),
+    nn.LazyConv2d(128, kernel_size=3),
     nn.ReLU(),
     nn.MaxPool2d(kernel_size=2),
     nn.Dropout(p=0.25),
@@ -31,21 +31,11 @@ model_cnn = nn.Sequential(
     # learner
     nn.Flatten(),
 
-    nn.Linear(128, 256),
+    nn.LazyLinear(256),
     nn.ReLU(),
     nn.Dropout(p=0.5),
 
-    nn.Linear(256, 10)
-)
-
-model_ffn = nn.Sequential(
-    nn.Flatten(),
-
-    nn.Linear(28*28, 512),
-    nn.ReLU(),
-    nn.Linear(512, 512),
-    nn.ReLU(),
-    nn.Linear(512, 10)
+    nn.LazyLinear(10)
 )
 
 
@@ -54,7 +44,6 @@ class Digits(LightningModule):
         super().__init__()
         self.save_hyperparameters()
         self.model = model_cnn
-        # self.model = model_ffn
 
     def forward(self, X):
         return self.model(X)
@@ -89,12 +78,6 @@ class Digits(LightningModule):
 
         self.log("test_loss", loss)
         self.log("test_acc", acc*100.0)
-
-    def predict_step(self, batch, batch_idx):
-        logits = self(batch)
-        probs = F.softmax(logits)
-
-        return probs
 
     def configure_optimizers(self):
         if self.hparams.optimizer_name == 'SGD':  # type: ignore
