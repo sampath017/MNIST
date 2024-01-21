@@ -1,8 +1,7 @@
 import os
-from PIL import Image
 import lightning.pytorch as pl
 from torch.utils.data import random_split, DataLoader
-from torchvision import datasets
+from torchvision.datasets.folder import ImageFolder
 from torchvision import transforms
 
 
@@ -16,17 +15,11 @@ class MNISTDataModule(pl.LightningDataModule):
         self.batch_size = 64
         self.cpu_count = c if (c := os.cpu_count()) else 8
 
-    def prepare_data(self):
-        # download (one time process)
-        datasets.MNIST(self.data_dir, train=True, download=True)
-        datasets.MNIST(self.data_dir, train=False, download=True)
-
     def setup(self, stage: str):
         # Assign datasets for use in dataloaders
         if stage == "fit":
-            dataset = datasets.MNIST(
-                self.data_dir,
-                train=True,
+            dataset = ImageFolder(
+                self.data_dir / "train",
                 transform=self.transforms
             )
             train_size = int(0.7 * len(dataset))
@@ -39,9 +32,8 @@ class MNISTDataModule(pl.LightningDataModule):
 
         # Assign test dataset for use in dataloader's
         if stage == "test":
-            self.test_dataset = datasets.MNIST(
-                self.data_dir,
-                train=False,
+            self.test_dataset = ImageFolder(
+                self.data_dir / "test",
                 transform=self.transforms
             )
 

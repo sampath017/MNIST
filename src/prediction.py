@@ -9,22 +9,25 @@ import torch.nn.functional as F
 from model import MNIST
 from PIL import Image
 
-root_path = Path('../')
 
-artifact_dir = root_path / 'artifacts'
-artifact_dir.mkdir(exist_ok=True)
+def prepare_model():
+    root_path = Path('../')
 
-model_path = Path(loggers.WandbLogger.download_artifact(  # type: ignore
-    artifact="sampath017/model-registry/MNIST:v2",
-    artifact_type='model',
-    save_dir=artifact_dir
-))
+    artifact_dir = root_path / 'models'
+    artifact_dir.mkdir(exist_ok=True)
 
-model_path = model_path / 'model.ckpt'
+    model_path = Path(loggers.WandbLogger.download_artifact(  # type: ignore
+        artifact="sampath017/model-registry/MNIST:v2",
+        artifact_type='model',
+        save_dir=artifact_dir
+    ))
 
+    model_path = model_path / 'model.ckpt'
 
-model = MNIST.load_from_checkpoint(
-    model_path, map_location=torch.device('cpu'))
+    model = MNIST.load_from_checkpoint(
+        model_path, map_location=torch.device('cpu'))
+
+    return model
 
 
 def predict(image_obj):
@@ -44,7 +47,6 @@ def predict(image_obj):
 demo = gr.Interface(
     fn=predict,
     inputs=gr.ImageEditor(
-        value=Image.new(mode="L", size=(500, 500), color="black"),
         image_mode="L",
         type="pil",
         brush=gr.Brush(colors=["white"]),
@@ -52,4 +54,7 @@ demo = gr.Interface(
     outputs=gr.Label(num_top_classes=3)
 )
 
-demo.launch()
+
+if __name__ == "__main__":
+    model = prepare_model()
+    demo.launch()
